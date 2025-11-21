@@ -2,52 +2,68 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import mysql.connector
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def main():
-    st.title("Sensor Dataa SQL-tietokannasta")
+    st.title("Sensor Data ja Säädata")
 
-    # 1️⃣ Yritetään yhdistää MySQL:ään
+    # Yhteys MySQL:ään
     try:
         conn = mysql.connector.connect(
-            host="localhost",
-            user="ubuntu",
-            password="salasana",  # korvaa oikealla salasanalla
-            database="streamlit"
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASS"),
+            database=os.getenv("DB_NAME")
         )
     except mysql.connector.Error as e:
         st.error(f"MySQL-yhteys epäonnistui: {e}")
         return
 
-    # 2️⃣ Haetaan data taulusta
     try:
-        df = pd.read_sql("SELECT timestamp, value FROM sendor_data", conn)
-        conn.close()
+        sensor_df = pd.read_sql("SELECT timestamp, value FROM sendor_data", conn)
+
+        if sensor_df.empty:
+            st.warning("Taulu 'sendor_data' on tyhjä. Lisää ensin dataa MySQL:ään.")
+        else:
+            sensor_df['timestamp'] = pd.to_datetime(sensor_df['timestamp'])
+            st.write("### Sensor Data Table")
+            st.dataframe(sensor_df)
+
+            fig = px.line(sensor_df, x="timestamp", y="value", title="Sensor Data Over Time")
+            st.plotly_chart(fig, use_container_width=True)
+
     except Exception as e:
-        st.error(f"Virhe datan lukemisessa: {e}")
-        return
+        st.error(f"Virhe sensoridatan lukemisessa: {e}")
 
-    # 3️⃣ Tarkistetaan, että DataFrame ei ole tyhjä
-    if df.empty:
-        st.warning("Taulu 'sendor_data' on tyhjä. Lisää ensin dataa MySQL:ään.")
-        return
-
-    # 4️⃣ Muutetaan timestamp Pandas datetimeksi
     try:
-        df['timestamp'] = pd.to_datetime(df['timestamp'])
-    except Exception as e:
-        st.error(f"Virhe timestamp-sarakkeen muunnoksessa: {e}")
-        return
+        weather_df = pd.read_sql(
+            "SELECT city, temperature, clouds, timestamp FROM weather_data ORDER BY timestamp DESC LIMIT 10",
+            conn
+        )
 
-    # 5️⃣ Näytetään taulukko
-    st.write("### Sensor Data Table")
-    st.dataframe(df)
+        if not weather_df.empty:
+            city = weather_df['city'][0]
+            temp = weather_df['temperature'][0]
+            clouds = weather_df['clouds'][0]
+            timestamp = weather_df['timestamp'][0]
 
-    # 6️⃣ Piirretään graafi
-    try:
-        fig = px.line(df, x="timestamp", y="value", title="Sensor Data Over Time")
-        st.plotly_chart(fig, width='stretch')  # korvataan vanha use_container_width
+            weather_df.rename(columns={
+    "city": "Kaupunki",
+    "temperature": "Lämpötila (°C)",
+    "clouds": "Pilvisyys (%)",
+    "timestamp": "Aikaleima"
+}, inplace=True)
+
+            st.write("### Viimeisin säädata")
+            st.dataframe(weather_df)
+
     except Exception as e:
-        st.error(f"Virhe graafin piirrossa: {e}")
+        st.error(f"Virhe säädatan lukemisessa: {e}")
+
+    conn.close()
 
 if __name__ == "__main__":
     main()
