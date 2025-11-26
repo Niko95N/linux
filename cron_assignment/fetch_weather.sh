@@ -3,19 +3,17 @@
 PROJECT_DIR="/home/ubuntu/Linux/cron_assignment"
 VENV_DIR="$PROJECT_DIR/venv"
 
-# Luo virtuaaliympäristö, jos sitä ei ole
 if [ ! -d "$VENV_DIR" ]; then
     /usr/bin/python3 -m venv "$VENV_DIR"
 fi
 
-# Aktivoi virtuaaliympäristö
+
 source "$VENV_DIR/bin/activate"
 
-# Asenna riippuvuudet
 if [ -f "$PROJECT_DIR/requirements.txt" ]; then
     pip install --upgrade pip
     pip install -r "$PROJECT_DIR/requirements.txt"
 fi
 
-# Suorita Python-skripti
+
 python "$PROJECT_DIR/fetch_weather.py"
