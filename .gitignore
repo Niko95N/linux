@@ -5,6 +5,9 @@ venv/
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+
+*.sqlite3
 
 .env
 
@@ -18,3 +21,8 @@ __pycache__/
 Thumbs.db
 
 fetch_weather.log
+*.csv
+*.xlsx
+
+.vscode/
+.idea/
