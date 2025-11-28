@@ -1,0 +1,16 @@
+venv/
+
+.env
+
+.streamlit/
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+*.csv
+*.xlsx
+
+.vscode/
+.idea/

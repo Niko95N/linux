@@ -7,7 +7,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+st.sidebar.title("Valikko")
+st.sidebar.markdown('<a href="http://195.148.21.250/chat" target="_self" style="text-decoration:none; color:orange;">💬Avaa Chat</a>',
+    unsafe_allow_html=True)
+st.sidebar.markdown('<a href="http://195.148.21.250" target="_self" style="text-decoration:none; color:orange;">🏠Avaa kotisivu</a>',
+    unsafe_allow_html=True)
+
 def main():
+    st.markdown("<--- Sivupaneeli")
     st.title("Sensor Data ja Säädata")
 
     # Yhteys MySQL:ään
