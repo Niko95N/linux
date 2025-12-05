@@ -43,30 +43,42 @@
 <body>
     <div class="container">
         <h1>LEMP Stack on Kubernetes</h1>
-        <p>Frontend: Nginx | Backend: Python/Flask | Database: MySQL</p>
+        <p>Frontend: Nginx | Backend: Python/Flask | Database: MySQL | <span id="like-count">0</span> tykkäystä</p>
         <p><strong>Server:</strong> <span id="serverInfo"></span></p>
 
         <div>
             <button onclick="checkHealth()">Check Backend Health</button>
             <button onclick="initDB()">Initialize Database</button>
             <button onclick="getUsers()">Get Users</button>
+            <button onclick="like()">Tykkää sivusta</button>
         </div>
-
+        <p>Status: <span id="health-light" 
+                      style="display:inline-block;width:20px;height:20px;border-radius:50%;background:red;">
+                  </span>
+        </p>
         <div id="result"></div>
     </div>
 
     <script>
         const resultDiv = document.getElementById('result');
         const serverInfo = document.getElementById('serverInfo');
+        const likeCountSpan = document.getElementById('like-count');
         serverInfo.textContent = window.location.href;
 
         async function checkHealth() {
+            const light = document.getElementById('health-light');
             try {
                 const response = await fetch('/kube/api/health');
                 const data = await response.json();
                 resultDiv.textContent = 'Health Check: ' + JSON.stringify(data, null, 2);
+                if (data.status === "healthy") {
+                    light.style.background = "green";
+                } else {
+                    light.style.background = "red";
+                }
             } catch (error) {
                 resultDiv.textContent = 'Error: ' + error.message;
+                light.style.background = "red";
             }
         }
 
@@ -89,6 +101,29 @@
                 resultDiv.textContent = 'Error: ' + error.message;
             }
         }
+
+        async function getLikes() {
+            try {
+                const response = await fetch('/kube/api/likes');
+                const data = await response.json();
+                likeCountSpan.textContent = data.count;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function like() {
+            try {
+                const response = await fetch('/kube/api/likes', { method: 'POST' });
+                const data = await response.json();
+                likeCountSpan.textContent = data.count;
+            } catch (error) {
+                 console.error(error);
+            }
+        }
+        window.onload = () => {
+            getLikes();
+        };
     </script>
 </body>
 </html>

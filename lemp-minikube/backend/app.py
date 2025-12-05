@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import mysql.connector
 import os
 
@@ -52,6 +52,31 @@ def init_db():
         return jsonify({"message": "Database initialized"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/api/likes', methods=['GET', 'POST'])
+def likes():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        if request.method == 'GET':
+            cursor.execute("SELECT count FROM likes WHERE id=1")
+            result = cursor.fetchone()
+            count = result['count'] if result else 0
+            return jsonify({"count": count})
+
+        if request.method == 'POST':
+            cursor.execute("UPDATE likes SET count = count + 1 WHERE id=1")
+            conn.commit()
+            cursor.execute("SELECT count FROM likes WHERE id=1")
+            count = cursor.fetchone()['count']
+            return jsonify({"count": count})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
