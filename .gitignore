@@ -26,3 +26,9 @@ fetch_weather.log
 
 .vscode/
 .idea/
+
+lemp-minikube/kubectl
+lemp-minikube/minikube-linux-amd64
+lemp-minikube/minikube
+kubectl
+minikube
