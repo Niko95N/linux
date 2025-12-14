@@ -120,7 +120,7 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             port: 22
             script: |
-              sudo cp /tmp/docker-compose.prod.yml /opt/lemp/docker-compose.yml
+              sudo cp /tmp/docker-compose.prod.yml lemp-cicd/docker-compose.yml
 
 
   deploy:
