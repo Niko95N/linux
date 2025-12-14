@@ -16,14 +16,14 @@
 
   <div id="time">Loading time...</div>
   <script>
-    fetch('/cicd/api/time')
+    fetch('cicd/api/time')
       .then(r => r.json())
       .then(d => { document.getElementById('time').innerText = d.message.time; })
       .catch(e => { document.getElementById('time').innerText = 'API error: ' + e; });
   </script>
   <div id="greeting">Loading greeting...</div>
   <script> 
-    fetch('/cicd/api')
+    fetch('cicd/api')
       .then(r => r.json())
       .then(d => { document.getElementById('greeting').innerText = d.message.greeting; })
       .catch(e => { document.getElementById('greeting').innerText = 'API error: ' + e; });
