@@ -76,9 +76,9 @@ jobs:
             port: 22
             script: |
               cd /
-              sudo mkdir -p /opt/lemp/db/init/
+              sudo mkdir -p /opt/lemp-cicd/db/
 
-        - name: Set permissions for /opt/lemp/db/init/
+        - name: Set permissions for /opt/lemp-cicd/db/
           uses: appleboy/ssh-action@v1.0.3
           with:
             host: ${{ secrets.SSH_HOST }}
@@ -86,8 +86,8 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             port: 22
             script: |
-              sudo chown -R $(whoami) /opt/lemp/db/init/
-              sudo chmod -R u+w /opt/lemp/db/init/
+              sudo chown -R $(whoami) /opt/lemp-cicd/db/
+              sudo chmod -R u+w /opt/lemp-cicd/db/init/
 
         - name: Copy init.sql to VM
           uses: appleboy/scp-action@v0.1.4
@@ -97,7 +97,7 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             port: 22
             source: lemp-cicd/db/init.sql
-            target: /opt/lemp/db/init/
+            target: /opt/lemp-cicd/db/
             strip_components: 2
 
 
@@ -112,7 +112,7 @@ jobs:
             source: lemp-cicd/docker-compose.prod.yml
             target: /tmp/
 
-        - name: Move docker-compose.prod.yml to /opt/lemp/ on VM
+        - name: Move docker-compose.prod.yml to /opt/lemp-cicd/ on VM
           uses: appleboy/ssh-action@v1.0.3
           with:
             host: ${{ secrets.SSH_HOST }}
