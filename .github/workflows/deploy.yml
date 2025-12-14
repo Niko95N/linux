@@ -96,7 +96,7 @@ jobs:
             username: ${{ secrets.SSH_USER }}
             key: ${{ secrets.SSH_KEY }}
             port: 22
-            source: db/init/init.sql
+            source: lemp-cicd/db/init.sql
             target: /opt/lemp/db/init/
             strip_components: 2
 
