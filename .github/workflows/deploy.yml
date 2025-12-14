@@ -111,6 +111,7 @@ jobs:
             port: 22
             source: lemp-cicd/docker-compose.prod.yml
             target: /tmp/
+            strip_components: 1
 
         - name: Move docker-compose.prod.yml to /opt/lemp-cicd/ on VM
           uses: appleboy/ssh-action@v1.0.3
