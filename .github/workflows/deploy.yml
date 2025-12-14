@@ -87,7 +87,7 @@ jobs:
             port: 22
             script: |
               sudo chown -R $(whoami) /opt/lemp-cicd/db/
-              sudo chmod -R u+w /opt/lemp-cicd/db/init/
+              sudo chmod -R u+w /opt/lemp-cicd/db/
 
         - name: Copy init.sql to VM
           uses: appleboy/scp-action@v0.1.4
