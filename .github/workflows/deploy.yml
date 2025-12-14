@@ -38,7 +38,7 @@ jobs:
       - name: Build & push backend
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: lemp-cicd/backend
           file: lemp-cicd/backend/Dockerfile
           push: true
           tags: |
