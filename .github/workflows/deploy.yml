@@ -22,7 +22,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install backend dependencies
-        run: pip install -r /lemp-cicd/backend/requirements.txt
+        run: pip install -r lemp-cicd/backend/requirements.txt
 
 
 
@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: /lemp-cicd/backend/Dockerfile
+          file: lemp-cicd/backend/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/lemp-backend:latest
@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: /lemp-cicd/frontend/Dockerfile
+          file: lemp-cicd/frontend/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/lemp-frontend:latest
