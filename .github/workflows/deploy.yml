@@ -109,7 +109,7 @@ jobs:
             username: ${{ secrets.SSH_USER }}
             key: ${{ secrets.SSH_KEY }}
             port: 22
-            source: docker-compose.prod.yml
+            source: lemp-cicd/docker-compose.prod.yml
             target: /tmp/
 
         - name: Move docker-compose.prod.yml to /opt/lemp/ on VM
