@@ -23,7 +23,7 @@
   </script>
   <div id="greeting">Loading greeting...</div>
   <script> 
-    fetch('cicd/api')
+    fetch('cicd/api/')
       .then(r => r.json())
       .then(d => { document.getElementById('greeting').innerText = d.message.greeting; })
       .catch(e => { document.getElementById('greeting').innerText = 'API error: ' + e; });
