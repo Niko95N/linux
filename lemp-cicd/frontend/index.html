@@ -8,7 +8,7 @@
   <h1>Frontend (Nginx) kontiilla cicd</h1>
   <div id="msg">Loading...</div>
   <script>
-    fetch('api/health')
+    fetch('cicd/api/health')
       .then(r => r.json())
       .then(d => { document.getElementById('msg').innerText = d.message.status; })
       .catch(e => { document.getElementById('msg').innerText = 'API error: ' + e; });
@@ -16,14 +16,14 @@
 
   <div id="time">Loading time...</div>
   <script>
-    fetch('api/time')
+    fetch('cicd/api/time')
       .then(r => r.json())
       .then(d => { document.getElementById('time').innerText = d.message.time; })
       .catch(e => { document.getElementById('time').innerText = 'API error: ' + e; });
   </script>
   <div id="greeting">Loading greeting...</div>
   <script> 
-    fetch('api')
+    fetch('cicd/api')
       .then(r => r.json())
       .then(d => { document.getElementById('greeting').innerText = d.message.greeting; })
       .catch(e => { document.getElementById('greeting').innerText = 'API error: ' + e; });

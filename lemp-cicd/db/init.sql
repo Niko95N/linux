@@ -1,4 +1,8 @@
 CREATE DATABASE IF NOT EXISTS appdb;
-CREATE USER IF NOT EXISTS 'appuser'@'%' IDENTIFIED BY 'salasana123!';
+
+CREATE USER IF NOT EXISTS 'appuser'@'%'
+IDENTIFIED WITH caching_sha2_password
+BY 'apppass';
+
 GRANT ALL PRIVILEGES ON appdb.* TO 'appuser'@'%';
 FLUSH PRIVILEGES;
